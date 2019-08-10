@@ -12,6 +12,7 @@ A plugin for opening web servers with plugins from Pocketmine.
 - 라라벨 적용
 - 플러그인들과 상호작용 할 수 있는 API 작성
 - 유저가 커스텀 가능한 웹페이지
+- 웹에서 서버 유저들과 채팅 가능
 
 ## 생각할것
 php web 이 아니라 php-cli 에서 실행되기 때문에  
