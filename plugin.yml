@@ -1,0 +1,9 @@
+name: PocketWebServer
+main: maru\pocketwebserver\Main
+version: 0.0.1
+api:
+- 3.0.0
+- 4.0.0
+
+author: maru
+website: https://github.com/MCFT-Server/PocketWebServer
