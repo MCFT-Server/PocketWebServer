@@ -1,33 +1,35 @@
 <?php
+
 namespace maru\pocketwebserver\webserver;
 
-use maru\pocketwebserver\webserver\task\SocketReadTask;
-use pocketmine\Server;
+use pocketmine\plugin\Plugin;
 
-class WebServer {
-    private $ip;
-    private $port;
-    private $socket;
-    /**
-     * 
-     * @var SocketReadTask $readTask
-     */
-    private $readTask;
-    
-    public function __construct($ip='0.0.0.0', $port=80) {
-        $this->ip = $ip;
-        $this->port = $port;
-    }
-    
-    public function start() {
-    	$errno = $errorMessage = null;
-    	$this->socket = stream_socket_server("tcp://{$this->ip}:{$this->port}", $errno, $errorMessage);
-    	if ($this->socket === false) {
-    		throw new \UnexpectedValueException("Could not bind to socket: $errorMessage");
-    	}
-    	
-        $this->readTask = new SocketReadTask($this->socket, Server::getInstance()->getLogger());
-        Server::getInstance()->getAsyncPool()->submitTask($this->readTask);
-   	}
+class WebServer extends \HTTPServer {
+	/**
+	 * 
+	 * @var IRouter[]
+	 */
+	protected $routers = [];
+	private $plugin;
+	
+	public function __construct(Plugin $plugin, $ip='0.0.0.0', $port=80) {
+		parent::__construct(array(
+			'addr' => $ip,
+			'port' => $port
+		));
+		$this->plugin = $plugin;
+	}
+	
+	public function route_request($request) {
+		$response = null;
+		foreach($this->routers as $router) {
+			$response = $router->request($server, $request);
+			if ($response !== null) break;
+		}
+		return $response;
+	}
+	
+	public function addRouter(IRouter $router) {
+		$this->routers[] = $router;
+	}
 }
-

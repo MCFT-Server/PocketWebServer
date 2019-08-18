@@ -1,0 +1,6 @@
+{
+    "name": "MCFT-Server/PocketWebServer", 
+    "require": {
+        "youngj/httpserver": "^1.0"
+    }
+}
